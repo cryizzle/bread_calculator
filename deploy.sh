@@ -1,6 +1,7 @@
 yarn build
 cd dist
-git init
+cp -rf * ~/dev/cryizzle.github.io/bread/
+cd ~/dev/cryizzle.github.io/
 git add -A
 git commit -m "Deploy"
-git push -f https://github.com/cryizzle/bread_calculator.git master:gh-pages
+git push
