@@ -4,16 +4,28 @@
     <div class="columns align-middle">
       <div class="column" v-for="type in RecipeScaleType" :key="type">
         <div class="field">
-          <input class="is-checkradio is-small" :id="type"
-          type="radio" :value="type" v-model="scaleType" />
+          <input
+            class="is-checkradio is-small"
+            :id="type"
+            type="radio"
+            :value="type"
+            v-model="scaleType"
+            :disabled="isRadioDisabled"
+          />
           <label :for="type">Scale By {{type}}</label>
         </div>
       </div>
     </div>
     <div v-if="scaleType === RecipeScaleType.PERCENTAGE" class="field has-addons">
       <p class="control">
-        <input v-model="scalePercentage" class="input is-small" type="number"
-        max="100" min="0" step="0.01" />
+        <input
+          v-model="scalePercentage"
+          class="input is-small"
+          type="number"
+          max="100"
+          min="0"
+          step="0.01"
+        />
       </p>
       <p class="control">
         <button class="button is-static is-small">%</button>
@@ -23,11 +35,17 @@
       <div class="control">
         <div class="select is-small">
           <select v-model="scaleIngredientID">
-            <optgroup v-for='(listByGroup, groupName) in ingredientsList'
-            :key='groupName' :label='groupName'>
-              <option v-for='ingredient in listByGroup' :key='ingredient.key'
-              :value='ingredient.key' :disabled='ingredient.amount <= 0'>
-                {{ingredient.name}}</option>
+            <optgroup
+              v-for="(listByGroup, groupName) in ingredientsList"
+              :key="groupName"
+              :label="groupName"
+            >
+              <option
+                v-for="ingredient in listByGroup"
+                :key="ingredient.key"
+                :value="ingredient.key"
+                :disabled="ingredient.amount <= 0"
+              >{{ingredient.name}}</option>
             </optgroup>
           </select>
         </div>
@@ -40,9 +58,11 @@
       </p>
     </div>
     <div class="buttons is-right">
-      <button class="button is-info is-small" @click="handleScale" :disabled="isButtonDisabled">
-      Calculate
-      </button>
+      <button
+        class="button is-info is-small"
+        @click="handleScale"
+        :disabled="isButtonDisabled"
+      >Calculate</button>
     </div>
   </div>
 </template>
@@ -76,7 +96,18 @@ export default {
       return _.groupBy(this.ingredients, 'group');
     },
     isButtonDisabled() {
-      return this.scaleType == null || this.scaleIngredientID == null || this.scaleAmount === 0;
+      if (this.scaleType == null) {
+        return true;
+      }
+      switch (this.scaleType) {
+        case RecipeScaleType.INGREDIENT:
+          return this.scaleIngredientID == null || this.scaleAmount === 0;
+        default:
+          return false;
+      }
+    },
+    isRadioDisabled() {
+      return _.keys(this.ingredients).length <= 0;
     },
   },
   methods: {

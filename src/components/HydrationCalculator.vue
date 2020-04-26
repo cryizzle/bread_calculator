@@ -14,7 +14,7 @@
 
     <input v-model="hydrationLevel"
     class="slider is-info is-medium is-circle is-fullwidth"
-     step="1" min="0" max="120" type="range" />
+     step="1" min="0" max="120" type="range" :disabled="this.waters.length <= 0" />
       </div>
       <div class="column is-2 has-text-centered">
         120%
