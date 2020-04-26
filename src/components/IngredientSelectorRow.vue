@@ -2,11 +2,16 @@
   <div class="columns">
     <div class="column is-one-third">
       <p v-if="isCustom" class="control">
-        <input v-model="customName" class="input is-small" placeholder="Input Ingredient Name" />
+        <input
+          v-model="name"
+          class="input is-small is-fullwidth"
+          placeholder="Input Custom Input"
+          @change="handleUpdate"
+        />
       </p>
       <div v-else class="control select is-small is-fullwidth">
-        <select>
-          <option v-for="(v,k) in options" :key="k">{{v}}</option>
+        <select v-model="name" @change="handleUpdate">
+          <option v-for="(v,k) in options" :key="k" :value="v">{{v}}</option>
         </select>
       </div>
     </div>
@@ -20,8 +25,8 @@
             :class="{
             'has-text-danger': isError
           }"
-          step="0.01"
-          :disabled="isLevain"
+            step="0.01"
+            :disabled="isLevain"
           />
         </p>
         <p class="control">
@@ -70,13 +75,12 @@ const _ = require('lodash');
 export default {
   data() {
     return {
-      customName: '',
+      name: null,
       amountInput: null,
       isError: false,
     };
   },
   props: {
-    groupName: String,
     ingredientTypes: Object,
     ingredientData: Object,
     totalFlours: Number,
@@ -97,10 +101,7 @@ export default {
       set(val) {
         this.amountInput = val;
         this.isError = false;
-        this.updateIngredientsAmount({
-          key: this.ingredientData.key,
-          amount: Number(this.amountInput),
-        });
+        this.handleUpdate();
         EventBus.$emit('ingredientUpdated');
       },
     },
@@ -128,10 +129,17 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['updateIngredientsAmount', 'deleteIngredients']),
+    ...mapActions(['updateIngredients', 'deleteIngredients']),
     handleDelete() {
       this.deleteIngredients({ key: this.ingredientData.key });
       EventBus.$emit('ingredientUpdated');
+    },
+    handleUpdate() {
+      this.updateIngredients({
+        key: this.ingredientData.key,
+        amount: Number(this.amountInput),
+        name: this.name,
+      });
     },
   },
   mounted() {
@@ -145,6 +153,17 @@ export default {
       this.amount = newDoughWater;
       this.isError = isError;
     });
+    EventBus.$on('scaledRecipe', () => {
+      this.amountInput = null;
+    });
+    if (this.name == null) {
+      this.name = this.isCustom ? '' : this.options[0];
+      this.updateIngredients({
+        key: this.ingredientData.key,
+        amount: 0.0,
+        name: this.name,
+      });
+    }
   },
 };
 </script>

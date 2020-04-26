@@ -9,7 +9,7 @@ export default new Vuex.Store({
   state: {
     ingredients: {},
     ingredientTypes: {
-      flour: ['All Purpose', 'Bread', 'Whole Wheat', 'Rye'],
+      flour: ['All Purpose Flour', 'Bread Flour', 'Whole Wheat Flour', 'Rye Flour'],
       water: ['Water'],
       salt: ['Salt'],
       levain: ['Levain'],
@@ -50,10 +50,16 @@ export default new Vuex.Store({
     }) {
       Vue.delete(state.ingredients, key);
     },
-    updateIngredientsAmount(state, { key, amount }) {
+    updateIngredients(state, { key, amount, name }) {
       if (state.ingredients[key] != null) {
         Vue.set(state.ingredients[key], 'amount', amount);
+        Vue.set(state.ingredients[key], 'name', name);
       }
+    },
+    scaleIngredientByPercentage(state, { key, percentage }) {
+      const curAmount = state.ingredients[key].amount;
+      const newAmount = curAmount * (percentage / 100.0);
+      Vue.set(state.ingredients[key], 'amount', newAmount);
     },
   },
   actions: {
@@ -71,8 +77,21 @@ export default new Vuex.Store({
         key,
       });
     },
-    updateIngredientsAmount({ commit }, { key, amount }) {
-      commit('updateIngredientsAmount', { key, amount });
+    updateIngredients({ commit }, { key, amount, name }) {
+      commit('updateIngredients', { key, amount, name });
+    },
+    scaleRecipeByPercentage({ commit, state }, percentage) {
+      _.forEach(state.ingredients, (ingredient) => {
+        commit('scaleIngredientByPercentage', {
+          key: ingredient.key,
+          percentage,
+        });
+      });
+    },
+    scaleRecipeByIngredient({ dispatch, state }, { key, newAmount }) {
+      console.log(key, newAmount);
+      const factor = newAmount / state.ingredients[key].amount;
+      dispatch('scaleRecipeByPercentage', factor * 100.0);
     },
   },
   modules: {

@@ -21,8 +21,11 @@
       </div>
     </div>
     <div class="columns">
-      <div class="column is-4">
+      <div class="column">
         <hydration-calculator />
+      </div>
+            <div class="column">
+        <recipe-scale />
       </div>
     </div>
   </div>
@@ -32,12 +35,14 @@
 <script>
 import IngredientsGroup from '@/components/IngredientsGroup.vue';
 import HydrationCalculator from '@/components/HydrationCalculator.vue';
+import RecipeScale from '@/components/RecipeScale.vue';
 import { mapState, mapGetters } from 'vuex';
 
 export default {
   components: {
     'ingredients-group': IngredientsGroup,
     'hydration-calculator': HydrationCalculator,
+    'recipe-scale': RecipeScale,
   },
   computed: {
     ...mapGetters(['containsLevain']),
