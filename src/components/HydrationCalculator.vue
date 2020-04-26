@@ -1,12 +1,12 @@
 <template>
   <div class="section">
-    <div class="title is-4">
+    <div class="title is-4 has-text-centered-mobile">
       Hydration Level: {{hydrationLevel}}%
     </div>
     <p>
       Adjust your recipe using Hydration Levels
     </p>
-    <div class="columns align-middle">
+    <div class="columns align-middle is-mobile">
       <div class="column is-2 has-text-centered">
         0%
       </div>

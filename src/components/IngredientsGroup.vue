@@ -1,24 +1,26 @@
 <template>
   <div class='section'>
-    <div class="title is-4">
-    {{groupNameDisplay}}
+    <div class="title is-4 capitalize has-text-centered-mobile">
+    {{groupName}}
     </div>
     <div v-if="active">
       <div class='buttons'>
-        <button  v-for="(options, type) in ingredientTypes" :key="type"
+        <button v-for="(options, type) in ingredientTypes" :key="type"
         :disabled="!availableType(type)" class="button is-rounded is-small"
         @click="handleAddIngredient(type)">{{buttonLabel(type)}}</button>
       </div>
-      <div v-for="data in ingredients" :key="data.key">
+      <div v-if='groupIngredients.length <= 0'>
+        Add ingredients by clicking on the above buttons
+      </div>
+      <div v-else v-for="data in groupIngredients" :key="data.key">
         <ingredient-selector-row
-          v-if="data.group === groupName"
           :totalFlours="totalFlours"
           :ingredientData="data"
           :ingredientTypes="ingredientTypes"
         />
       </div>
     </div>
-    <div v-else>{{groupNameDisplay}} is not added</div>
+    <div v-else>Please add <strong>{{groupName}}</strong> first</div>
   </div>
 </template>
 <script>
@@ -40,7 +42,9 @@ export default {
   computed: {
     ...mapState(['ingredients']),
     ...mapGetters(['flours', 'levain']),
-    groupNameDisplay() { return _.startCase(this.groupName); },
+    groupIngredients() {
+      return _.filter(this.ingredients, { group: this.groupName });
+    },
     totalFlours() {
       return _(this.flours)
         .filter({ group: this.groupName })

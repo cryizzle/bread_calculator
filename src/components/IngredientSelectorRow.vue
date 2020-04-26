@@ -1,11 +1,11 @@
 <template>
-  <div class="columns">
-    <div class="column is-one-third">
+  <div class="columns is-desktop">
+    <div class="column is-5-desktop">
       <p v-if="isCustom" class="control">
         <input
           v-model="name"
-          class="input is-small is-fullwidth"
-          placeholder="Input Custom Input"
+          class="input is-small"
+          placeholder="Input Ingredient"
           @change="handleUpdate"
         />
       </p>
@@ -16,8 +16,10 @@
       </div>
     </div>
     <div class="column">
+    <div class="columns is-mobile is-tablet">
+    <div class="column is-5">
       <div class="field has-addons">
-        <p class="control">
+        <p class="control is-expanded">
           <input
             v-model="amount"
             class="input is-small"
@@ -26,7 +28,7 @@
             'has-text-danger': isError
           }"
             step="0.01"
-            :disabled="isLevain"
+            :readonly="isLevain"
           />
         </p>
         <p class="control">
@@ -39,9 +41,9 @@
         </p>
       </div>
     </div>
-    <div class="column">
+    <div class="column is-5">
       <div class="field has-addons">
-        <p class="control is-small">
+        <p class="control is-small is-expanded">
           <input
             v-model="percentage"
             class="input is-small"
@@ -49,6 +51,7 @@
             max="100"
             min="0"
             step="0.01"
+            readonly
           />
         </p>
         <p class="control">
@@ -56,12 +59,14 @@
         </p>
       </div>
     </div>
-    <div class="column">
-      <div class="control">
-        <button class="button is-danger is-small is-light" @click="handleDelete()">
+    <div class="column is-2">
+      <div class="control has-text-right">
+        <button class="button is-danger is-small is-light is-fullwidth" @click="handleDelete()">
           <fa class="icon" icon="times" />
         </button>
       </div>
+    </div>
+    </div>
     </div>
   </div>
 </template>
