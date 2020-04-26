@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="columns">
-      <div class="column">
+      <div class="column is-4">
         <hydration-calculator />
       </div>
     </div>
@@ -33,7 +33,6 @@
 import IngredientsGroup from '@/components/IngredientsGroup.vue';
 import HydrationCalculator from '@/components/HydrationCalculator.vue';
 import { mapState, mapGetters } from 'vuex';
-// const _ = require('lodash');
 
 export default {
   components: {

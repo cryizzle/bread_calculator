@@ -2,8 +2,7 @@
   <div class="columns">
     <div class="column is-one-third">
       <p v-if="isCustom" class="control">
-        <input v-model="customName" class="input is-small"
-        placeholder="Input Ingredient Name" />
+        <input v-model="customName" class="input is-small" placeholder="Input Ingredient Name" />
       </p>
       <div v-else class="control select is-small is-fullwidth">
         <select>
@@ -14,18 +13,24 @@
     <div class="column">
       <div class="field has-addons">
         <p class="control">
-          <input v-if="isLevain" :value="totalLevain"
-          class="input is-small" type="number" disabled />
           <input
-            v-else
             v-model="amount"
-            @change="handleAmountUpdate"
             class="input is-small"
             type="number"
+            :class="{
+            'has-text-danger': isError
+          }"
+          step="0.01"
+          :disabled="isLevain"
           />
         </p>
         <p class="control">
-          <button class="button is-static is-small">g</button>
+          <button
+            class="button is-static is-small"
+            :class="{
+            'has-text-danger': isError
+          }"
+          >g</button>
         </p>
       </div>
     </div>
@@ -58,6 +63,7 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
+import EventBus from '../event_bus/EventBus';
 
 const _ = require('lodash');
 
@@ -65,7 +71,8 @@ export default {
   data() {
     return {
       customName: '',
-      amount: 0.0,
+      amountInput: null,
+      isError: false,
     };
   },
   props: {
@@ -77,6 +84,26 @@ export default {
   computed: {
     ...mapState(['ingredientsID', 'ingredients']),
     ...mapGetters(['levain']),
+    amount: {
+      get() {
+        if (this.isLevain) {
+          return _.round(this.totalLevain, 2);
+        }
+        if (this.amountInput != null) {
+          return _.round(this.amountInput, 2);
+        }
+        return _.round(this.ingredientData.amount, 2);
+      },
+      set(val) {
+        this.amountInput = val;
+        this.isError = false;
+        this.updateIngredientsAmount({
+          key: this.ingredientData.key,
+          amount: Number(this.amountInput),
+        });
+        EventBus.$emit('ingredientUpdated');
+      },
+    },
     isCustom() {
       return this.ingredientData.type === 'custom';
     },
@@ -102,16 +129,22 @@ export default {
   },
   methods: {
     ...mapActions(['updateIngredientsAmount', 'deleteIngredients']),
-    handleAmountUpdate() {
-      this.updateIngredientsAmount({
-        key: this.ingredientData.key,
-        amount: Number(this.amount),
-      });
-    },
     handleDelete() {
       this.deleteIngredients({ key: this.ingredientData.key });
+      EventBus.$emit('ingredientUpdated');
     },
   },
-  mounted() {},
+  mounted() {
+    EventBus.$on('hydrationUpdated', ({ newDoughWater, isError }) => {
+      if (
+        this.ingredientType !== 'water'
+        || this.ingredientData.group !== 'main dough'
+      ) {
+        return;
+      }
+      this.amount = newDoughWater;
+      this.isError = isError;
+    });
+  },
 };
 </script>

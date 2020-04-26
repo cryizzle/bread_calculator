@@ -24,6 +24,7 @@
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
 import IngredientSelectorRow from '@/components/IngredientSelectorRow.vue';
+import EventBus from '../event_bus/EventBus';
 
 const _ = require('lodash');
 
@@ -73,6 +74,7 @@ export default {
         amount: 0.0,
         group: this.groupName,
       });
+      EventBus.$emit('ingredientUpdated');
     },
     availableType(type) {
       return this.excludedTypes.indexOf(type) === -1;
