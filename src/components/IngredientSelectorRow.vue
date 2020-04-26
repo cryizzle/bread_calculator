@@ -1,19 +1,28 @@
 <template>
   <div class="columns">
     <div class="column is-one-third">
-        <div class="control select is-small is-fullwidth">
-          <select>
-            <option v-for="(v,k) in options" :key="k">{{v}}</option>
-          </select>
+      <p v-if="isCustom" class="control">
+        <input v-model="customName" class="input is-small"
+        placeholder="Input Ingredient Name" />
+      </p>
+      <div v-else class="control select is-small is-fullwidth">
+        <select>
+          <option v-for="(v,k) in options" :key="k">{{v}}</option>
+        </select>
       </div>
     </div>
     <div class="column">
       <div class="field has-addons">
         <p class="control">
-          <input v-if='isLevain' :value='totalLevain' class='input is-small' type='number' disabled>
-          <input v-else v-model="amount" @change="handleAmountUpdate"
-          class="input is-small" type="number"
-           />
+          <input v-if="isLevain" :value="totalLevain"
+          class="input is-small" type="number" disabled />
+          <input
+            v-else
+            v-model="amount"
+            @change="handleAmountUpdate"
+            class="input is-small"
+            type="number"
+          />
         </p>
         <p class="control">
           <button class="button is-static is-small">g</button>
@@ -23,8 +32,14 @@
     <div class="column">
       <div class="field has-addons">
         <p class="control is-small">
-          <input v-model="percentage" class="input is-small"
-          type="number" max="100" min="0" step="0.01" />
+          <input
+            v-model="percentage"
+            class="input is-small"
+            type="number"
+            max="100"
+            min="0"
+            step="0.01"
+          />
         </p>
         <p class="control">
           <button class="button is-small is-static">%</button>
@@ -34,7 +49,7 @@
     <div class="column">
       <div class="control">
         <button class="button is-danger is-small is-light" @click="handleDelete()">
-          <fa class='icon' icon='times'/>
+          <fa class="icon" icon="times" />
         </button>
       </div>
     </div>
@@ -49,6 +64,7 @@ const _ = require('lodash');
 export default {
   data() {
     return {
+      customName: '',
       amount: 0.0,
     };
   },
@@ -61,6 +77,9 @@ export default {
   computed: {
     ...mapState(['ingredientsID', 'ingredients']),
     ...mapGetters(['levain']),
+    isCustom() {
+      return this.ingredientData.type === 'custom';
+    },
     isLevain() {
       return this.ingredientData.type === 'levain';
     },

@@ -15,6 +15,7 @@ export default new Vuex.Store({
       levain: ['Levain'],
       fat: ['Butter', 'Vegetable Oil', 'Olive Oil'],
       yeast: ['Yeast'],
+      custom: [],
     },
     levainIngredientsTypes: {
       flour: ['All Purpose', 'Bread', 'Whole Wheat', 'Rye'],
