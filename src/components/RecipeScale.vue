@@ -4,42 +4,43 @@
     <div class="columns align-middle">
       <div class="column" v-for="type in RecipeScaleType" :key="type">
         <div class="field">
-          <input class="is-checkradio" :id="type" type="radio" :value="type" v-model="scaleType" />
+          <input class="is-checkradio is-small" :id="type"
+          type="radio" :value="type" v-model="scaleType" />
           <label :for="type">Scale By {{type}}</label>
         </div>
       </div>
     </div>
     <div v-if="scaleType === RecipeScaleType.PERCENTAGE" class="field has-addons">
       <p class="control">
-        <input v-model="scalePercentage" class="input" type="number"
+        <input v-model="scalePercentage" class="input is-small" type="number"
         max="100" min="0" step="0.01" />
       </p>
       <p class="control">
-        <button class="button is-static">%</button>
+        <button class="button is-static is-small">%</button>
       </p>
     </div>
     <div v-if="scaleType === RecipeScaleType.INGREDIENT" class="field has-addons">
       <div class="control">
-        <div class="select">
+        <div class="select is-small">
           <select v-model="scaleIngredientID">
             <optgroup v-for='(listByGroup, groupName) in ingredientsList'
             :key='groupName' :label='groupName'>
               <option v-for='ingredient in listByGroup' :key='ingredient.key'
-              :value='ingredient.key'>
+              :value='ingredient.key' :disabled='ingredient.amount <= 0'>
                 {{ingredient.name}}</option>
             </optgroup>
           </select>
         </div>
       </div>
       <p class="control">
-        <input v-model="scaleAmount" class="input" type="number" step="0.01" />
+        <input v-model="scaleAmount" class="input is-small" type="number" step="0.01" />
       </p>
       <p class="control">
-        <button class="button is-static">g</button>
+        <button class="button is-static is-small">g</button>
       </p>
     </div>
     <div class="buttons is-right">
-      <button class="button is-info" @click="handleScale" :disabled="isButtonDisabled">
+      <button class="button is-info is-small" @click="handleScale" :disabled="isButtonDisabled">
       Calculate
       </button>
     </div>

@@ -1,34 +1,31 @@
 <template>
-<div>
+  <div>
     <section class="hero is-light">
-  <div class="hero-body">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title is-2 titleText">Bread Calculator</h1>
+        </div>
+      </div>
+    </section>
     <div class="container">
-      <h1 class="title is-2 titleText">
-    Bread Calculator
-      </h1>
-    </div>
-  </div>
-</section>
-  <div class='container'>
-    <div class="columns">
-      <div class="column">
-        <ingredients-group :active='true' :groupName="'main dough'"
-         :ingredientTypes="ingredientTypes" />
+      <div class="columns">
+        <div class="column" v-for="group in IngredientGroupEnum" :key="group">
+          <ingredients-group
+            :active="isActive(group)"
+            :groupName="group"
+            :ingredientTypes="getIngredientTypes(group)"
+          />
+        </div>
       </div>
-      <div class="column">
-        <ingredients-group :active='containsLevain' :groupName="'levain'"
-         :ingredientTypes="levainIngredientsTypes" />
-      </div>
-    </div>
-    <div class="columns">
-      <div class="column">
-        <hydration-calculator />
-      </div>
-            <div class="column">
-        <recipe-scale />
+      <div class="columns">
+        <div class="column">
+          <hydration-calculator />
+        </div>
+        <div class="column">
+          <recipe-scale />
+        </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -37,6 +34,7 @@ import IngredientsGroup from '@/components/IngredientsGroup.vue';
 import HydrationCalculator from '@/components/HydrationCalculator.vue';
 import RecipeScale from '@/components/RecipeScale.vue';
 import { mapState, mapGetters } from 'vuex';
+import IngredientGroupEnum from '../constants/IngredientGroupEnum';
 
 export default {
   components: {
@@ -47,8 +45,30 @@ export default {
   computed: {
     ...mapGetters(['containsLevain']),
     ...mapState(['ingredientTypes', 'levainIngredientsTypes']),
+    IngredientGroupEnum() {
+      return IngredientGroupEnum;
+    },
   },
-  methods: {},
+  methods: {
+    getIngredientTypes(group) {
+      switch (group) {
+        case IngredientGroupEnum.MAIN_DOUGH:
+          return this.ingredientTypes;
+        case IngredientGroupEnum.LEVAIN:
+          return this.levainIngredientsTypes;
+        default:
+          return {};
+      }
+    },
+    isActive(group) {
+      switch (group) {
+        case IngredientGroupEnum.LEVAIN:
+          return this.containsLevain;
+        default:
+          return true;
+      }
+    },
+  },
   data() {
     return {};
   },
@@ -56,7 +76,7 @@ export default {
 </script>
 
 <style scoped>
-  .titleText{
-    font-family: 'IM Fell English', serif;
-  }
+.titleText {
+  font-family: "IM Fell English", serif;
+}
 </style>

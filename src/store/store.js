@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import IngredientGroupEnum from '../constants/IngredientGroupEnum';
 
 const _ = require('lodash');
 
@@ -34,7 +35,7 @@ export default new Vuex.Store({
       return _.filter(state.ingredients, { type: 'levain' }).length > 0;
     },
     levain(state) {
-      return _.filter(state.ingredients, { group: 'levain' });
+      return _.filter(state.ingredients, { group: IngredientGroupEnum.LEVAIN });
     },
   },
   mutations: {
@@ -89,11 +90,12 @@ export default new Vuex.Store({
       });
     },
     scaleRecipeByIngredient({ dispatch, state }, { key, newAmount }) {
-      console.log(key, newAmount);
-      const factor = newAmount / state.ingredients[key].amount;
+      const oldAmount = state.ingredients[key].amount;
+      if (oldAmount <= 0) {
+        return;
+      }
+      const factor = newAmount / oldAmount;
       dispatch('scaleRecipeByPercentage', factor * 100.0);
     },
-  },
-  modules: {
   },
 });

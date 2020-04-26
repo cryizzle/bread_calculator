@@ -69,6 +69,7 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex';
 import EventBus from '../event_bus/EventBus';
+import IngredientGroupEnum from '../constants/IngredientGroupEnum';
 
 const _ = require('lodash');
 
@@ -137,7 +138,7 @@ export default {
     handleUpdate() {
       this.updateIngredients({
         key: this.ingredientData.key,
-        amount: Number(this.amountInput),
+        amount: Number(this.amount),
         name: this.name,
       });
     },
@@ -146,7 +147,7 @@ export default {
     EventBus.$on('hydrationUpdated', ({ newDoughWater, isError }) => {
       if (
         this.ingredientType !== 'water'
-        || this.ingredientData.group !== 'main dough'
+        || this.ingredientData.group !== IngredientGroupEnum.MAIN_DOUGH
       ) {
         return;
       }
