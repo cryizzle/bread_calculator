@@ -97,5 +97,14 @@ export default new Vuex.Store({
       const factor = newAmount / oldAmount;
       dispatch('scaleRecipeByPercentage', factor * 100.0);
     },
+    scaleRecipeByMainDough({ dispatch, getters }, newAmount) {
+      const oldAmount = _(getters.flours).filter({ group: IngredientGroupEnum.MAIN_DOUGH })
+        .sumBy('amount');
+      if (oldAmount <= 0) {
+        return;
+      }
+      const factor = newAmount / oldAmount;
+      dispatch('scaleRecipeByPercentage', factor * 100.0);
+    },
   },
 });

@@ -1,19 +1,17 @@
 <template>
   <div class="section">
     <div class="title is-4">Scale this Recipe</div>
-    <div class="columns align-middle">
-      <div class="column" v-for="type in RecipeScaleType" :key="type">
-        <div class="field">
-          <input
-            class="is-checkradio is-small"
-            :id="type"
-            type="radio"
-            :value="type"
-            v-model="scaleType"
-            :disabled="isRadioDisabled"
-          />
-          <label :for="type">Scale By {{type}}</label>
-        </div>
+    <div class="columns field align-middle">
+      <div v-for="type in RecipeScaleType" :key="type">
+        <input
+          class="is-checkradio is-small"
+          :id="type"
+          type="radio"
+          :value="type"
+          v-model="scaleType"
+          :disabled="isRadioDisabled"
+        />
+        <label :for="type">Scale By {{type}}</label>
       </div>
     </div>
     <div v-if="scaleType === RecipeScaleType.PERCENTAGE" class="field has-addons">
@@ -57,6 +55,21 @@
         <button class="button is-static is-small">g</button>
       </p>
     </div>
+    <div v-if="scaleType === RecipeScaleType.MAIN_DOUGH_FLOUR" class="field has-addons">
+      <p class="control">
+        <input
+          v-model="scaleAmount"
+          class="input is-small"
+          type="number"
+          max="100"
+          min="0"
+          step="0.01"
+        />
+      </p>
+      <p class="control">
+        <button class="button is-static is-small">g</button>
+      </p>
+    </div>
     <div class="buttons is-right">
       <button
         class="button is-info is-small"
@@ -76,6 +89,7 @@ const _ = require('lodash');
 const RecipeScaleType = {
   PERCENTAGE: 'Percentage',
   INGREDIENT: 'Ingredient',
+  MAIN_DOUGH_FLOUR: 'Main Dough Flour',
 };
 
 export default {
@@ -111,7 +125,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['scaleRecipeByPercentage', 'scaleRecipeByIngredient']),
+    ...mapActions([
+      'scaleRecipeByPercentage',
+      'scaleRecipeByIngredient',
+      'scaleRecipeByMainDough',
+    ]),
     handleScale() {
       switch (this.scaleType) {
         case RecipeScaleType.PERCENTAGE:
@@ -123,6 +141,9 @@ export default {
             key: this.scaleIngredientID,
             newAmount: this.scaleAmount,
           });
+          break;
+        case RecipeScaleType.MAIN_DOUGH_FLOUR:
+          this.scaleRecipeByMainDough(this.scaleAmount);
           break;
         default:
           return;
