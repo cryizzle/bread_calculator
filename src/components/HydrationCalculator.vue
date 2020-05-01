@@ -36,7 +36,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['flours', 'waters', 'levain']),
+    ...mapGetters(['flours', 'waters', 'starter', 'levain']),
     hydrationLevel: {
       get() {
         if (this.hydrationInput != null) {
@@ -59,10 +59,13 @@ export default {
       },
     },
     totalWater() {
-      return _.sumBy(this.waters, (x) => x.amount);
+      return _.sumBy(this.waters, (x) => x.amount) + this.totalStarter / 2.0;
     },
     totalFlour() {
-      return _.sumBy(this.flours, (x) => x.amount);
+      return _.sumBy(this.flours, (x) => x.amount) + this.totalStarter / 2.0;
+    },
+    totalStarter() {
+      return _.sumBy(this.starter, (x) => x.amount);
     },
     levainWater() {
       return _(this.levain).filter({ type: 'water' }).sumBy((x) => x.amount);

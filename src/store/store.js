@@ -19,7 +19,7 @@ export default new Vuex.Store({
       custom: [],
     },
     levainIngredientsTypes: {
-      flour: ['All Purpose', 'Bread', 'Whole Wheat', 'Rye'],
+      flour: ['All Purpose Flour', 'Bread Flour', 'Whole Wheat Flour', 'Rye Flour'],
       water: ['Water'],
       starter: ['Sourdough Starter'],
     },
@@ -30,6 +30,9 @@ export default new Vuex.Store({
     },
     waters(state) {
       return _.filter(state.ingredients, { type: 'water' });
+    },
+    starter(state) {
+      return _.filter(state.ingredients, { type: 'starter' });
     },
     containsLevain(state) {
       return _.filter(state.ingredients, { type: 'levain' }).length > 0;

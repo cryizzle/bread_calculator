@@ -9,6 +9,13 @@
           @change="handleUpdate"
         />
       </p>
+      <p v-if="options.length === 1" class="control">
+        <input
+          v-model="name"
+          class="input is-small"
+          readonly
+        />
+      </p>
       <div v-else class="control select is-small is-fullwidth">
         <select v-model="name" @change="handleUpdate">
           <option v-for="(v,k) in options" :key="k" :value="v">{{v}}</option>
