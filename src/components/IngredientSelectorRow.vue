@@ -82,6 +82,7 @@
 import { mapState, mapActions, mapGetters } from 'vuex';
 import EventBus from '../event_bus/EventBus';
 import IngredientGroupEnum from '../constants/IngredientGroupEnum';
+import IngredientTypeEnum from '../constants/IngredientTypeEnum';
 
 const _ = require('lodash');
 
@@ -119,10 +120,10 @@ export default {
       },
     },
     isCustom() {
-      return this.ingredientData.type === 'custom';
+      return this.ingredientData.type === IngredientTypeEnum.CUSTOM;
     },
     isLevain() {
-      return this.ingredientData.type === 'levain';
+      return this.ingredientData.type === IngredientTypeEnum.LEVAIN;
     },
     ingredientType() {
       return this.ingredientData.type;
@@ -158,7 +159,7 @@ export default {
   mounted() {
     EventBus.$on('hydrationUpdated', ({ newDoughWater, isError }) => {
       if (
-        this.ingredientType !== 'water'
+        this.ingredientType !== IngredientTypeEnum.WATER
         || this.ingredientData.group !== IngredientGroupEnum.MAIN_DOUGH
       ) {
         return;

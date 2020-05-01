@@ -26,6 +26,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import EventBus from '../event_bus/EventBus';
+import IngredientTypeEnum from '../constants/IngredientTypeEnum';
 
 const _ = require('lodash');
 
@@ -68,7 +69,7 @@ export default {
       return _.sumBy(this.starter, (x) => x.amount);
     },
     levainWater() {
-      return _(this.levain).filter({ type: 'water' }).sumBy((x) => x.amount);
+      return _(this.levain).filter({ type: IngredientTypeEnum.WATER }).sumBy((x) => x.amount);
     },
   },
   mounted() {

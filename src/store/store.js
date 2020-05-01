@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import IngredientGroupEnum from '../constants/IngredientGroupEnum';
+import IngredientTypeEnum from '../constants/IngredientTypeEnum';
 
 const _ = require('lodash');
 
@@ -10,32 +11,32 @@ export default new Vuex.Store({
   state: {
     ingredients: {},
     ingredientTypes: {
-      flour: ['All Purpose Flour', 'Bread Flour', 'Whole Wheat Flour', 'Rye Flour'],
-      water: ['Water'],
-      salt: ['Salt'],
-      levain: ['Levain'],
-      fat: ['Butter', 'Vegetable Oil', 'Olive Oil'],
-      yeast: ['Yeast'],
-      custom: [],
+      [IngredientTypeEnum.FLOUR]: ['All Purpose Flour', 'Bread Flour', 'Whole Wheat Flour', 'Rye Flour'],
+      [IngredientTypeEnum.WATER]: ['Water'],
+      [IngredientTypeEnum.SALT]: ['Salt'],
+      [IngredientTypeEnum.LEVAIN]: ['Levain'],
+      [IngredientTypeEnum.FAT]: ['Butter', 'Vegetable Oil', 'Olive Oil'],
+      [IngredientTypeEnum.YEAST]: ['Yeast'],
+      [IngredientTypeEnum.CUSTOM]: [],
     },
     levainIngredientsTypes: {
-      flour: ['All Purpose Flour', 'Bread Flour', 'Whole Wheat Flour', 'Rye Flour'],
-      water: ['Water'],
-      starter: ['Sourdough Starter'],
+      [IngredientTypeEnum.FLOUR]: ['All Purpose Flour', 'Bread Flour', 'Whole Wheat Flour', 'Rye Flour'],
+      [IngredientTypeEnum.WATER]: ['Water'],
+      [IngredientTypeEnum.STARTER]: ['Sourdough Starter'],
     },
   },
   getters: {
     flours(state) {
-      return _.filter(state.ingredients, { type: 'flour' });
+      return _.filter(state.ingredients, { type: IngredientTypeEnum.FLOUR });
     },
     waters(state) {
-      return _.filter(state.ingredients, { type: 'water' });
+      return _.filter(state.ingredients, { type: IngredientTypeEnum.WATER });
     },
     starter(state) {
-      return _.filter(state.ingredients, { type: 'starter' });
+      return _.filter(state.ingredients, { type: IngredientTypeEnum.STARTER });
     },
     containsLevain(state) {
-      return _.filter(state.ingredients, { type: 'levain' }).length > 0;
+      return _.filter(state.ingredients, { type: IngredientTypeEnum.LEVAIN }).length > 0;
     },
     levain(state) {
       return _.filter(state.ingredients, { group: IngredientGroupEnum.LEVAIN });

@@ -6,8 +6,8 @@
     <div v-if="active">
       <div class='buttons'>
         <button v-for="(options, type) in ingredientTypes" :key="type"
-        :disabled="!availableType(type)" class="button is-rounded is-small"
-        @click="handleAddIngredient(type)">{{buttonLabel(type)}}</button>
+        :disabled="!availableType(type)" class="button is-rounded is-small capitalize"
+        @click="handleAddIngredient(type)">{{type}}</button>
       </div>
       <div v-if='groupIngredients.length <= 0'>
         Add ingredients by clicking on the above buttons
@@ -82,9 +82,6 @@ export default {
     },
     availableType(type) {
       return this.excludedTypes.indexOf(type) === -1;
-    },
-    buttonLabel(type) {
-      return _.startCase(type);
     },
   },
 };
