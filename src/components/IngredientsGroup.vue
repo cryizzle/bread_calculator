@@ -27,6 +27,7 @@
 import { mapActions, mapGetters, mapState } from 'vuex';
 import IngredientSelectorRow from '@/components/IngredientSelectorRow.vue';
 import EventBus from '../event_bus/EventBus';
+import IngredientsListing from '../constants/IngredientsListing';
 
 const _ = require('lodash');
 
@@ -37,7 +38,6 @@ export default {
   props: {
     active: Boolean,
     groupName: String,
-    ingredientTypes: Object,
   },
   computed: {
     ...mapState(['ingredients']),
@@ -67,6 +67,9 @@ export default {
         }
       });
       return arr;
+    },
+    ingredientTypes() {
+      return IngredientsListing[this.groupName];
     },
   },
   methods: {

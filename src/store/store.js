@@ -10,20 +10,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     ingredients: {},
-    ingredientTypes: {
-      [IngredientTypeEnum.FLOUR]: ['All Purpose Flour', 'Bread Flour', 'Whole Wheat Flour', 'Rye Flour'],
-      [IngredientTypeEnum.WATER]: ['Water'],
-      [IngredientTypeEnum.SALT]: ['Salt'],
-      [IngredientTypeEnum.LEVAIN]: ['Levain'],
-      [IngredientTypeEnum.FAT]: ['Butter', 'Vegetable Oil', 'Olive Oil'],
-      [IngredientTypeEnum.YEAST]: ['Yeast'],
-      [IngredientTypeEnum.CUSTOM]: [],
-    },
-    levainIngredientsTypes: {
-      [IngredientTypeEnum.FLOUR]: ['All Purpose Flour', 'Bread Flour', 'Whole Wheat Flour', 'Rye Flour'],
-      [IngredientTypeEnum.WATER]: ['Water'],
-      [IngredientTypeEnum.STARTER]: ['Sourdough Starter'],
-    },
   },
   getters: {
     flours(state) {

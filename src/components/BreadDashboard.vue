@@ -14,7 +14,6 @@
           <ingredients-group
             :active="isActive(group)"
             :groupName="group"
-            :ingredientTypes="getIngredientTypes(group)"
           />
         </div>
       </div>
@@ -51,16 +50,6 @@ export default {
     },
   },
   methods: {
-    getIngredientTypes(group) {
-      switch (group) {
-        case IngredientGroupEnum.MAIN_DOUGH:
-          return this.ingredientTypes;
-        case IngredientGroupEnum.LEVAIN:
-          return this.levainIngredientsTypes;
-        default:
-          return {};
-      }
-    },
     isActive(group) {
       switch (group) {
         case IngredientGroupEnum.LEVAIN:
