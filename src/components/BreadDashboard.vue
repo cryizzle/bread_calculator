@@ -1,20 +1,26 @@
 <template>
   <div>
-    <section class="hero is-light">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title is-2 titleText">Bread Maths</h1>
-          <h1 class="subtitle titleText">& Recipe Scaling</h1>
+    <nav class="navbar is-light">
+      <div class="container title-text">
+        <div class="navbar-brand">
+          <div class="navbar-item block">
+            <h1 class="title is-2">Bread Maths</h1>
+            <h1 class="subtitle">& Recipe Scaling</h1>
+          </div>
+        </div>
+        <div class="navbar-end">
+          <div class="navbar-item flex-end">
+            <button class="button is-rounded is-dark is-outlined is-small"
+              @click="handleVersionUpdatesModal"
+            >Version Updates</button>
+          </div>
         </div>
       </div>
-    </section>
+    </nav>
     <div class="container">
       <div class="columns">
         <div class="column" v-for="group in IngredientGroupEnum" :key="group">
-          <ingredients-group
-            :active="isActive(group)"
-            :groupName="group"
-          />
+          <ingredients-group :active="isActive(group)" :groupName="group" />
         </div>
       </div>
       <div class="columns">
@@ -58,15 +64,28 @@ export default {
           return true;
       }
     },
-  },
-  data() {
-    return {};
+    handleVersionUpdatesModal() {
+      this.$modal.show({
+        template: `<div>
+      <p>Close using this button:</p>
+    </div>`,
+      });
+    },
   },
 };
 </script>
 
 <style scoped>
-.titleText {
+.title-text {
   font-family: "IM Fell English", serif;
+}
+.flex-end {
+  align-items: flex-end;
+}
+.block {
+  display: block;
+}
+.navbar {
+  padding: 12px 0px;
 }
 </style>

@@ -4,9 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import Vue from 'vue';
 import vSelect from 'vue-select';
+import VModal from 'vue-js-modal';
 import App from './App.vue';
 import router from './router';
 import store from './store/store';
+
+Vue.use(VModal, { dynamic: true, injectModalsContainer: true });
 
 library.add(faTimes);
 
