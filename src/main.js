@@ -9,14 +9,14 @@ import App from './App.vue';
 import router from './router';
 import store from './store/store';
 
-Vue.use(VModal, { dynamic: true, injectModalsContainer: true });
-
 library.add(faTimes);
 
 Vue.component('fa', FontAwesomeIcon);
 Vue.component('v-select', vSelect);
 
 Vue.config.productionTip = false;
+
+Vue.use(VModal, { dynamic: true, injectModalsContainer: true });
 
 new Vue({
   router,

@@ -11,7 +11,7 @@
         <div class="navbar-end">
           <div class="navbar-item flex-end">
             <button class="button is-rounded is-dark is-outlined is-small"
-              @click="handleVersionUpdatesModal"
+              @click="handleVersionUpdatesModal()"
             >Version Updates</button>
           </div>
         </div>
@@ -39,6 +39,7 @@
 import IngredientsGroup from '@/components/IngredientsGroup.vue';
 import HydrationCalculator from '@/components/HydrationCalculator.vue';
 import RecipeScale from '@/components/RecipeScale.vue';
+import VersionUpdatesModal from '@/components/modals/VersionUpdatesModal.vue';
 import { mapState, mapGetters } from 'vuex';
 import IngredientGroupEnum from '../constants/IngredientGroupEnum';
 
@@ -65,11 +66,7 @@ export default {
       }
     },
     handleVersionUpdatesModal() {
-      this.$modal.show({
-        template: `<div>
-      <p>Close using this button:</p>
-    </div>`,
-      });
+      this.$modal.show(VersionUpdatesModal, {}, { height: 'auto', classes: 'version-update-modal' });
     },
   },
 };
@@ -87,5 +84,11 @@ export default {
 }
 .navbar {
   padding: 12px 0px;
+}
+</style>
+
+<style>
+.version-update-modal {
+  border-radius: 6px !important;
 }
 </style>
