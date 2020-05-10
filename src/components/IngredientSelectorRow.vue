@@ -98,7 +98,7 @@ export default {
   },
   computed: {
     ...mapState(['ingredientsID', 'ingredients']),
-    ...mapGetters(['levain']),
+    ...mapGetters(['levain', 'waters']),
     amount: {
       get() {
         if (this.ingredientData.isLevain) {
@@ -129,6 +129,10 @@ export default {
     totalLevain() {
       return _(this.levain).sumBy((val) => val.amount);
     },
+    totalMainDoughWater() {
+      return _(this.waters).filter({ group: IngredientGroupEnum.MAIN_DOUGH })
+        .sumBy((val) => val.amount);
+    },
   },
   methods: {
     ...mapActions(['updateIngredients', 'deleteIngredients']),
@@ -152,7 +156,8 @@ export default {
       ) {
         return;
       }
-      this.amount = newDoughWater;
+      const newAmount = (this.amount / this.totalMainDoughWater) * newDoughWater;
+      this.amount = newAmount;
       this.isError = isError;
     });
     EventBus.$on('scaledRecipe', () => {
