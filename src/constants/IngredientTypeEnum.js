@@ -5,6 +5,6 @@ export default {
   LEVAIN: 'levain',
   SALT: 'salt',
   STARTER: 'starter',
-  WATER: 'water',
+  WATER: 'liquid',
   YEAST: 'yeast',
 };
