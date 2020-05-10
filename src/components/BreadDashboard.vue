@@ -9,7 +9,7 @@
           </div>
         </div>
         <div class="navbar-end">
-          <div class="navbar-item flex-end">
+          <div class="navbar-item flex-end has-text-right">
             <button class="button is-rounded is-dark is-outlined is-small"
               @click="handleVersionUpdatesModal()"
             >Version Updates</button>

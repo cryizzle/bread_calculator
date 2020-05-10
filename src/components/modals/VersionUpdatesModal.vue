@@ -32,6 +32,7 @@ export default {
         '10-05-2020': [
           'Changed "Water" ingredient to "Liquid" to include Milk, Juice and Alcohol',
           'Factored in more liquid ingredients for Hydration Calculation',
+          'Added Responsiveness for Version Updates Modal to support Mobile',
         ],
         '03-05-2020': [
           'Fixed Bug with Hydration Percentage',
