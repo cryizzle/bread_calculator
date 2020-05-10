@@ -66,7 +66,7 @@ export default {
       }
     },
     handleVersionUpdatesModal() {
-      this.$modal.show(VersionUpdatesModal, {}, { height: 'auto', classes: 'version-update-modal' });
+      this.$modal.show(VersionUpdatesModal, {}, { adaptive: true, height: 'auto', classes: 'version-update-modal' });
     },
   },
 };
