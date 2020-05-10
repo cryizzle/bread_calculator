@@ -1,3 +1,6 @@
+const warnIfProduction = process.env.NODE_ENV === 'production' ? 'warn' : 'off';
+const errorIfProduction = process.env.NODE_ENV === 'production' ? 'error' : 'warn';
+
 module.exports = {
   root: true,
   env: {
@@ -11,7 +14,11 @@ module.exports = {
     ecmaVersion: 2020,
   },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-console': warnIfProduction,
+    'no-debugger': warnIfProduction,
+    'no-underscore-dangle': 'off',
+    'indent': errorIfProduction,
+    'no-unused-vars': errorIfProduction,
+    'object-curly-spacing': errorIfProduction,
   },
 };

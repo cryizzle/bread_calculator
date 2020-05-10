@@ -1,7 +1,7 @@
 <template>
   <div class="columns is-desktop">
     <div class="column is-5-desktop">
-      <p v-if="isCustom" class="control">
+      <p v-if="ingredientData.isCustom" class="control">
         <input
           v-model="name"
           class="input is-small"
@@ -31,7 +31,7 @@
             'has-text-danger': isError
           }"
                 step="0.01"
-                :readonly="isLevain"
+                :readonly="ingredientData.isLevain"
               />
             </p>
             <p class="control">
@@ -79,6 +79,7 @@ import { mapState, mapActions, mapGetters } from 'vuex';
 import EventBus from '../event_bus/EventBus';
 import IngredientGroupEnum from '../constants/IngredientGroupEnum';
 import IngredientTypeEnum from '../constants/IngredientTypeEnum';
+import IngredientModel from '../model/IngredientModel';
 
 const _ = require('lodash');
 
@@ -92,7 +93,7 @@ export default {
   },
   props: {
     ingredientTypes: Object,
-    ingredientData: Object,
+    ingredientData: IngredientModel,
     totalFlours: Number,
   },
   computed: {
@@ -100,7 +101,7 @@ export default {
     ...mapGetters(['levain']),
     amount: {
       get() {
-        if (this.isLevain) {
+        if (this.ingredientData.isLevain) {
           return _.round(this.totalLevain, 2);
         }
         if (this.amountInput != null) {
@@ -115,23 +116,14 @@ export default {
         EventBus.$emit('ingredientUpdated');
       },
     },
-    isCustom() {
-      return this.ingredientData.type === IngredientTypeEnum.CUSTOM;
-    },
-    isLevain() {
-      return this.ingredientData.type === IngredientTypeEnum.LEVAIN;
-    },
-    ingredientType() {
-      return this.ingredientData.type;
-    },
     options() {
-      return this.ingredientTypes[this.ingredientType];
+      return this.ingredientTypes[this.ingredientData.type];
     },
     percentage() {
       if (this.totalFlours <= 0) {
         return 0.0;
       }
-      const amount = this.isLevain ? this.totalLevain : this.amount;
+      const amount = this.ingredientData.isLevain ? this.totalLevain : this.amount;
       return _.round((amount / this.totalFlours) * 100.0, 2);
     },
     totalLevain() {
@@ -155,8 +147,8 @@ export default {
   mounted() {
     EventBus.$on('hydrationUpdated', ({ newDoughWater, isError }) => {
       if (
-        this.ingredientType !== IngredientTypeEnum.WATER
-        || this.ingredientData.group !== IngredientGroupEnum.MAIN_DOUGH
+        !this.ingredientData.isType(IngredientTypeEnum.WATER)
+        || !this.ingredientData.isGroup(IngredientGroupEnum.MAIN_DOUGH)
       ) {
         return;
       }
@@ -167,7 +159,7 @@ export default {
       this.amountInput = null;
     });
     if (this.name == null) {
-      this.name = this.isCustom ? '' : this.options[0];
+      this.name = this.ingredientData.isCustom ? '' : this.options[0];
       this.updateIngredients({
         key: this.ingredientData.key,
         amount: 0.0,

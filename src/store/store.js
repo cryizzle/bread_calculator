@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import IngredientGroupEnum from '../constants/IngredientGroupEnum';
 import IngredientTypeEnum from '../constants/IngredientTypeEnum';
+import IngredientModel from '../model/IngredientModel';
 
 const _ = require('lodash');
 
@@ -29,37 +30,21 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    addIngredients(state, {
-      key, type, amount, group,
-    }) {
-      Vue.set(state.ingredients, key, {
-        key, amount, type, group,
-      });
-    },
     deleteIngredients(state, {
       key,
     }) {
       Vue.delete(state.ingredients, key);
     },
-    updateIngredients(state, { key, amount, name }) {
-      if (state.ingredients[key] != null) {
-        Vue.set(state.ingredients[key], 'amount', amount);
-        Vue.set(state.ingredients[key], 'name', name);
-      }
-    },
-    scaleIngredientByPercentage(state, { key, percentage }) {
-      const curAmount = state.ingredients[key].amount;
-      const newAmount = curAmount * (percentage / 100.0);
-      Vue.set(state.ingredients[key], 'amount', newAmount);
+    setIngredient(state, ingredient) {
+      Vue.set(state.ingredients, ingredient.key, ingredient);
     },
   },
   actions: {
     addIngredients({ commit }, {
       key, type, amount, group,
     }) {
-      commit('addIngredients', {
-        key, type, amount, group,
-      });
+      const ingredient = new IngredientModel(key, amount, type, group);
+      commit('setIngredient', ingredient);
     },
     deleteIngredients({ commit }, {
       key,
@@ -68,12 +53,24 @@ export default new Vuex.Store({
         key,
       });
     },
-    updateIngredients({ commit }, { key, amount, name }) {
-      commit('updateIngredients', { key, amount, name });
+    updateIngredients({ commit, state }, { key, amount, name }) {
+      const ingredient = state.ingredients[key];
+      if (ingredient != null) {
+        ingredient.amount = amount;
+        ingredient.name = name;
+        commit('setIngredient', ingredient);
+      }
     },
-    scaleRecipeByPercentage({ commit, state }, percentage) {
+    scaleIngredientByPercentage({ commit, state }, { key, percentage }) {
+      const curAmount = state.ingredients[key].amount;
+      const newAmount = curAmount * (percentage / 100.0);
+      const ingredient = state.ingredients[key];
+      ingredient.amount = newAmount;
+      commit('setIngredient', ingredient);
+    },
+    scaleRecipeByPercentage({ dispatch, state }, percentage) {
       _.forEach(state.ingredients, (ingredient) => {
-        commit('scaleIngredientByPercentage', {
+        dispatch('scaleIngredientByPercentage', {
           key: ingredient.key,
           percentage,
         });
